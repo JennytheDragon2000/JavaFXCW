@@ -125,7 +125,7 @@
                                        </children>
                                     </AnchorPane>
                                     <Button fx:id="btn_Add_horse" layoutX="23.0" layoutY="450.0" mnemonicParsing="false" onAction="#onAddHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="Add" />
-                                    <Button fx:id="btn_update_horse" layoutX="141.0" layoutY="450.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="109.0" styleClass="update-btn" stylesheets="@dashboardDesign.css" text="Update" />
+                                    <Button fx:id="btn_update_horse" layoutX="141.0" layoutY="450.0" mnemonicParsing="false" onAction="#onUpdateHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="update-btn" stylesheets="@dashboardDesign.css" text="Update" />
                                     <Button fx:id="btn_clear_horse" layoutX="261.0" layoutY="450.0" mnemonicParsing="false" onAction="#onClearHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Clear" />
                                     <Button fx:id="btn_delete_horse" layoutX="382.0" layoutY="450.0" mnemonicParsing="false" onAction="#onDeleteHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Delete" />
                                  </children>

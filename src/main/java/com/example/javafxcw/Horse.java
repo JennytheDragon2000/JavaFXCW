@@ -1,10 +1,7 @@
 package com.example.javafxcw;
 
 import java.io.*;
-
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
-
 
 public class Horse implements Serializable {
     private static final long serialVersionUID = 1L; // required for serialization
@@ -16,7 +13,7 @@ public class Horse implements Serializable {
     private String breed;
     private String raceRecord;
     private String group;
-    private transient Image horseImage; // transient fields are not serialized
+    private String imagePath; // store the path to the image instead of Image object
 
     public String getHorseID() {
         return horseID;
@@ -74,15 +71,15 @@ public class Horse implements Serializable {
         this.group = group;
     }
 
-    public Image getHorseImage() {
-        return horseImage;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setHorseImage(Image horseImage) {
-        this.horseImage = horseImage;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
-    public Horse(String horseID, String horseName, String jockeyName, int age, String breed, String raceRecord, String group, Image horseImage) {
+    public Horse(String horseID, String horseName, String jockeyName, int age, String breed, String raceRecord, String group, String imagePath) {
         this.horseID = horseID;
         this.horseName = horseName;
         this.jockeyName = jockeyName;
@@ -90,7 +87,7 @@ public class Horse implements Serializable {
         this.breed = breed;
         this.raceRecord = raceRecord;
         this.group = group;
-        this.horseImage = horseImage;
+        this.imagePath = imagePath;
     }
 
     // Getters and setters
@@ -109,5 +106,4 @@ public class Horse implements Serializable {
             e.printStackTrace();
         }
     }
-
 }

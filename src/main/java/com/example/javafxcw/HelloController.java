@@ -42,6 +42,17 @@ public class HelloController {
     public Button btn_clear_horse;
     public Button btn_delete_horse;
 
+    public String getSelectedImagePath() {
+        return selectedImagePath;
+    }
+
+    public void setSelectedImagePath(String selectedImagePath) {
+        this.selectedImagePath = selectedImagePath;
+    }
+
+    private String selectedImagePath;
+
+
 
     @FXML
     private void initialize() {
@@ -86,9 +97,14 @@ public class HelloController {
                 txtfld_Breed.setText(selectedHorse.getBreed());
                 txtfld_Race_Record.setText(selectedHorse.getRaceRecord());
                 txtfld_Group.setText(selectedHorse.getGroup());
-                // Handle image separately if needed
                 // Update the image view with the selected horse's image
-                imgvw_Horse_Image.setImage(selectedHorse.getHorseImage());
+                String imagePath = selectedHorse.getImagePath();
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    imgvw_Horse_Image.setImage(new Image(imagePath));
+                } else {
+                    // Set a default image or clear the image view if no image path is available
+                    imgvw_Horse_Image.setImage(null);
+                }
             }
         });
 
@@ -125,9 +141,10 @@ public class HelloController {
         String breed = txtfld_Breed.getText();
         String raceRecord = txtfld_Race_Record.getText();
         String group = txtfld_Group.getText();
-        Image horseImage = imgvw_Horse_Image.getImage();
+        // Use the selectedImagePath variable instead of imgvw_Horse_Image.getImagePath()
+        String imagePath = selectedImagePath;
 
-        Horse horse = new Horse(horseID, horseName, jockeyName, age, breed, raceRecord, group, horseImage);
+        Horse horse = new Horse(horseID, horseName, jockeyName, age, breed, raceRecord, group, imagePath);
         horses.add(horse); // Append the new horse to the list
 
         // Update TableView
@@ -172,7 +189,7 @@ public class HelloController {
         System.out.println("Breed: " + horse.getBreed());
         System.out.println("Race Record: " + horse.getRaceRecord());
         System.out.println("Group: " + horse.getGroup());
-        System.out.println("Horse Image: " + horse.getHorseImage());
+        System.out.println("Horse Image: " + horse.getImagePath());
         System.out.println("----------------------------");
     }
 
@@ -190,17 +207,11 @@ public class HelloController {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-            // Load the selected image
-            Image selectedImage = new Image(selectedFile.toURI().toString());
+            // Get the path of the selected image
+            selectedImagePath = selectedFile.toURI().toString();
 
             // Set the image in the ImageView
-            imgvw_Horse_Image.setImage(selectedImage);
-
-            // Set the image to the selected horse (if any)
-            Horse selectedHorse = (Horse) tbl_HorseDetails.getSelectionModel().getSelectedItem();
-            if (selectedHorse != null) {
-                selectedHorse.setHorseImage(selectedImage);
-            }
+            imgvw_Horse_Image.setImage(new Image(selectedImagePath));
         }
     }
 
@@ -225,4 +236,35 @@ public class HelloController {
             // You can use a dialog box or a label to display the message
         }
     }
+
+    @FXML
+    private void onUpdateHorseButtonClick() {
+        // Get the selected item from the TableView
+        Horse selectedHorse = (Horse) tbl_HorseDetails.getSelectionModel().getSelectedItem();
+        if (selectedHorse != null) {
+            // Update the details of the selected horse
+            selectedHorse.setHorseID(txtfld_Horse_ID.getText());
+            selectedHorse.setHorseName(txtfld_Horse_Name.getText());
+            selectedHorse.setJockeyName(txtfld_Jockey_Name.getText());
+            selectedHorse.setAge(Integer.parseInt(txtfld_Age.getText()));
+            selectedHorse.setBreed(txtfld_Breed.getText());
+            selectedHorse.setRaceRecord(txtfld_Race_Record.getText());
+            selectedHorse.setGroup(txtfld_Group.getText());
+
+            // Update the image path if a new image was selected
+            if (selectedImagePath != null && !selectedImagePath.isEmpty()) {
+                selectedHorse.setImagePath(selectedImagePath);
+            }
+
+            // Refresh the TableView to reflect the changes
+            tbl_HorseDetails.refresh();
+
+            // Save the updated list to file
+            Horse.saveHorseListToFile(horses, "horses.dat");
+        } else {
+            // Display a message indicating that no horse is selected
+            // You can use a dialog box or a label to display the message
+        }
+    }
+
 }
