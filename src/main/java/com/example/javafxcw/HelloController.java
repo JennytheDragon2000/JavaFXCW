@@ -1,7 +1,5 @@
 package com.example.javafxcw;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,10 +12,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 
 import java.io.*;
+import java.util.*;
 
 public class HelloController {
+    public Button btn_Race;
+    public AnchorPane Horse_Pane;
+    public AnchorPane Race_Pane;
+    public Button btn_Horse;
+    public Button btn_select_horses;
     private ObservableList<Horse> horses = FXCollections.observableArrayList();
-    public Button helloButoon;
     public TableView tbl_HorseDetails;
     public TableColumn clmn_Horse_ID;
     public TableColumn clmn_Horse_Name;
@@ -135,9 +138,38 @@ public class HelloController {
     @FXML
     private void onAddHorseButtonClick() {
         String horseID = txtfld_Horse_ID.getText();
+        // Check if the horse ID already exists
+        boolean idExists = horses.stream().anyMatch(horse -> horse.getHorseID().equals(horseID));
+
+
+        if (idExists) {
+            // Display an error message indicating that the horse ID already exists
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Horse with ID " + horseID + " already exists.");
+            alert.showAndWait();
+            return;
+        }
+
         String horseName = txtfld_Horse_Name.getText();
         String jockeyName = txtfld_Jockey_Name.getText();
-        int age = Integer.parseInt(txtfld_Age.getText());
+//        int age = Integer.parseInt(txtfld_Age.getText());
+        // Validate age input
+        String ageText = txtfld_Age.getText();
+        int age;
+        try {
+            age = Integer.parseInt(ageText);
+        } catch (NumberFormatException e) {
+            // Display an error message indicating that the age must be an integer
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Age must be a valid integer.");
+            alert.showAndWait();
+            return;
+        }
+
         String breed = txtfld_Breed.getText();
         String raceRecord = txtfld_Race_Record.getText();
         String group = txtfld_Group.getText();
@@ -153,6 +185,27 @@ public class HelloController {
         // Save the updated list to file
         Horse.saveHorseListToFile(horses, "horses.dat");
     }
+
+    public void switchForm(ActionEvent event) {
+
+        if (event.getSource() == btn_Horse) {
+            Horse_Pane.setVisible(true);
+            Race_Pane.setVisible(false);
+
+            btn_Horse.setStyle("-fx-background-color:linear-gradient(to bottom right, #3a4368, #28966c);");
+            btn_Race.setStyle("-fx-background-color:transparent");
+
+        } else if (event.getSource() == btn_Race) {
+            Horse_Pane.setVisible(false);
+            Race_Pane.setVisible(true);
+
+            btn_Race.setStyle("-fx-background-color:linear-gradient(to bottom right, #3a4368, #28966c);");
+            btn_Horse.setStyle("-fx-background-color:transparent");
+
+
+        }
+    }
+
 
     private void loadHorsesFromFile() {
         try {
@@ -191,6 +244,30 @@ public class HelloController {
         System.out.println("Group: " + horse.getGroup());
         System.out.println("Horse Image: " + horse.getImagePath());
         System.out.println("----------------------------");
+    }
+
+
+    // Group horses by their group
+    private static Map<String, List<Horse>> groupHorsesByGroup(List<Horse> horses) {
+        Map<String, List<Horse>> horseGroups = new HashMap<>();
+        for (Horse horse : horses) {
+            horseGroups.computeIfAbsent(horse.getGroup(), k -> new ArrayList<>()).add(horse);
+        }
+        return horseGroups;
+    }
+
+    // Select the top horse from each group with the best time
+    private static Map<String, Horse> selectTopHorsesByGroup(Map<String, List<Horse>> horseGroups) {
+        Map<String, Horse> topHorsesByGroup = new HashMap<>();
+        for (Map.Entry<String, List<Horse>> entry : horseGroups.entrySet()) {
+            String group = entry.getKey();
+            List<Horse> horses = entry.getValue();
+            horses.sort(Comparator.comparingDouble(Horse::getRaceTime));
+            if (!horses.isEmpty()) {
+                topHorsesByGroup.put(group, horses.get(0));
+            }
+        }
+        return topHorsesByGroup;
     }
 
 

@@ -106,4 +106,10 @@ public class Horse implements Serializable {
             e.printStackTrace();
         }
     }
+
+    public double getRaceTime() {
+        // Generate a random value between 0 and 90
+        double randomValue = Math.random() * 90;
+        return randomValue;
+    }
 }
