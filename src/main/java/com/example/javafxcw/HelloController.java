@@ -4,6 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -20,6 +24,21 @@ public class HelloController {
     public AnchorPane Race_Pane;
     public Button btn_Horse;
     public Button btn_select_horses;
+    public BarChart barChart;
+    public Button btn_start_race;
+    public AnchorPane barChart_cart;
+    public Button btn_select_horses_by_group;
+    public TableView tbl_select_horse_group;
+    public TableColumn select_clmn_Horse_ID1;
+    public TableColumn select_clmn_Horse_Name1;
+    public TableColumn select_clmn_Jockey_Name1;
+    public TableColumn select_clmn_Age1;
+    public TableColumn select_clmn_Breed1;
+    public TableColumn select_Race_Record1;
+    public TableColumn select_Group1;
+    public TableColumn select_Horse_Image1;
+    public TableColumn select_clam_Jockey_Name1;
+    public Button btn_select_horses1;
     private ObservableList<Horse> horses = FXCollections.observableArrayList();
     public TableView tbl_HorseDetails;
     public TableColumn clmn_Horse_ID;
@@ -44,6 +63,8 @@ public class HelloController {
     public Button btn_update_horse;
     public Button btn_clear_horse;
     public Button btn_delete_horse;
+    Map<String, List<Horse>> horseGroups;
+    Map<String, Horse> topHorsesByGroup;
 
     public String getSelectedImagePath() {
         return selectedImagePath;
@@ -110,6 +131,8 @@ public class HelloController {
                 }
             }
         });
+
+
 
 
     }
@@ -343,5 +366,42 @@ public class HelloController {
             // You can use a dialog box or a label to display the message
         }
     }
+
+
+    @FXML
+    private void onSelectHorsesButtonClick() {
+        horseGroups = groupHorsesByGroup(new ArrayList<>(horses));
+        topHorsesByGroup = selectTopHorsesByGroup(horseGroups);
+
+        // Now you can do whatever you want with the top horses by group
+        for (Map.Entry<String, Horse> entry : topHorsesByGroup.entrySet()) {
+            String group = entry.getKey();
+            Horse topHorse = entry.getValue();
+            System.out.println("Group: " + group + ", Top Horse: " + topHorse.getHorseName() + ", Race Time: " + topHorse.getRaceTime());
+            // Or perform any other action with the top horse, such as displaying it in a UI component
+        }
+    }
+
+    @FXML
+    private void onStartRaceButtonClick() {
+        //        onSelectHorsesButtonClick(); // Call this first to initialize topHorsesByGroup
+
+        // Sort the top horses by race time
+        List<Horse> topHorses = new ArrayList<>(topHorsesByGroup.values());
+        topHorses.sort(Comparator.comparingDouble(Horse::getRaceTime));
+        // Select the top 3 horses with the least time
+        List<Horse> top3Horses = topHorses.subList(0, Math.min(3, topHorses.size()));
+
+        // Clear existing data from the bar chart
+        barChart.getData().clear();
+
+        // Create a single series and add data points to it
+        XYChart.Series<String, Double> series = new XYChart.Series<>();
+        for (Horse horse : top3Horses) {
+            series.getData().add(new XYChart.Data<>(horse.getHorseName(), horse.getRaceTime()));
+        }
+        barChart.getData().add(series);
+    }
+
 
 }

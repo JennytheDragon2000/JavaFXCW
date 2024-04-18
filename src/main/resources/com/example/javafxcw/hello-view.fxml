@@ -69,6 +69,11 @@
                               <FontAwesomeIconView fill="WHITE" glyphName="STAR" size="20.0" />
                            </graphic>
                         </Button>
+                        <Button fx:id="btn_Race1" layoutX="23.0" layoutY="349.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="52.0" prefWidth="155.0" styleClass="nav-btn" stylesheets="@dashboardDesign.css" text="Select Horses">
+                           <graphic>
+                              <FontAwesomeIconView fill="WHITE" glyphName="STAR" size="20.0" />
+                           </graphic>
+                        </Button>
                      </children>
                   </AnchorPane>
                </left>
@@ -134,15 +139,15 @@
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="Race_Pane" layoutX="250.0" layoutY="141.0" prefHeight="555.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="Race_Pane" layoutX="250.0" layoutY="141.0" prefHeight="555.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane layoutX="23.0" layoutY="26.0" prefHeight="235.0" prefWidth="851.0" stylesheets="@dashboardDesign.css">
+                              <AnchorPane fx:id="barChart_cart" layoutX="23.0" layoutY="26.0" prefHeight="235.0" prefWidth="851.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <BarChart layoutX="161.0" layoutY="69.0" prefHeight="352.0" prefWidth="851.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <BarChart fx:id="barChart" layoutX="161.0" layoutY="69.0" prefHeight="352.0" prefWidth="851.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />
                                       </xAxis>
@@ -152,8 +157,31 @@
                                     </BarChart>
                                  </children>
                               </AnchorPane>
-                              <Button layoutX="431.0" layoutY="278.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="107.0" text="Start Race" />
-                              <Button fx:id="btn_select_horses" layoutX="303.0" layoutY="278.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="107.0" text="Select Horses" />
+                              <Button fx:id="btn_start_race" layoutX="431.0" layoutY="278.0" mnemonicParsing="false" onAction="#onStartRaceButtonClick" prefHeight="53.0" prefWidth="107.0" text="Start Race" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="select_horses_pane" layoutX="350.0" layoutY="140.0" prefHeight="555.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="40.0" layoutY="23.0" prefHeight="417.0" prefWidth="845.0" stylesheets="@dashboardDesign.css">
+                                 <styleClass>
+                                    <String fx:value="shadow" />
+                                    <String fx:value="white-bg" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <Button fx:id="btn_select_horses_by_group" layoutX="330.0" layoutY="452.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="288.0" text="Select Top Horse From Each Group" />
+                              <TableView fx:id="tbl_select_horse_group" layoutX="58.0" layoutY="35.0" prefHeight="394.0" prefWidth="813.0">
+                                 <columns>
+                                    <TableColumn fx:id="select_clmn_Horse_ID1" prefWidth="83.0" text="Horse ID" />
+                                    <TableColumn fx:id="select_clmn_Horse_Name1" prefWidth="118.0" text="Horse Name" />
+                                    <TableColumn fx:id="select_clam_Jockey_Name1" prefWidth="99.0" text="Jockey Name" />
+                                    <TableColumn fx:id="select_clmn_Age1" prefWidth="66.0" text="Age" />
+                                    <TableColumn fx:id="select_clmn_Breed1" prefWidth="106.0" text="Breed" />
+                                    <TableColumn fx:id="select_Race_Record1" prefWidth="110.0" text="Race Record" />
+                                    <TableColumn fx:id="select_Group1" prefWidth="100.0" text="Group" />
+                                    <TableColumn fx:id="select_Horse_Image1" prefWidth="152.0" text="Horse Image" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="btn_select_horses1" layoutX="147.0" layoutY="455.0" mnemonicParsing="false" onAction="#onSelectHorsesButtonClick" prefHeight="53.0" prefWidth="107.0" text="Select Horses" />
                            </children>
                         </AnchorPane>
                      </children>
