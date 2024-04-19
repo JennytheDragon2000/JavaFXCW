@@ -369,19 +369,33 @@ public class AppController {
     }
 
     // Select the top horse from each group with the best time
+    public static void sortHorsesByRaceTime(List<Horse> horses) {
+        for (int i = 0; i < horses.size() - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < horses.size(); j++) {
+                if (horses.get(j).getRaceTime() < horses.get(minIndex).getRaceTime()) {
+                    minIndex = j;
+                }
+            }
+            if (minIndex != i) {
+                Horse temp = horses.get(i);
+                horses.set(i, horses.get(minIndex));
+                horses.set(minIndex, temp);
+            }
+        }
+    }
     static Map<String, Horse> selectTopHorsesByGroup(Map<String, List<Horse>> horseGroups) {
         Map<String, Horse> topHorsesByGroup = new HashMap<>();
         for (Map.Entry<String, List<Horse>> entry : horseGroups.entrySet()) {
             String group = entry.getKey();
             List<Horse> horses = entry.getValue();
-            horses.sort(Comparator.comparingDouble(Horse::getRaceTime));
+            sortHorsesByRaceTime(horses); // Use the custom sorting function
             if (!horses.isEmpty()) {
                 topHorsesByGroup.put(group, horses.get(0));
             }
         }
         return topHorsesByGroup;
     }
-
 
     @FXML
     private void onImportImageButtonClick() {
