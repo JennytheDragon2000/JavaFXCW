@@ -53,7 +53,7 @@
                               <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20.0" />
                            </graphic>
                         </Button>
-                        <Button layoutX="9.0" layoutY="497.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="28.0" styleClass="logout" stylesheets="@dashboardDesign.css">
+                        <Button fx:id="btn_logout" layoutX="9.0" layoutY="497.0" mnemonicParsing="false" onAction="#logout" prefHeight="14.0" prefWidth="28.0" styleClass="logout" stylesheets="@dashboardDesign.css">
                            <graphic>
                               <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="30.0" text="" />
                            </graphic>
@@ -94,7 +94,7 @@
                                           <String fx:value="shadow" />
                                        </styleClass>
                                        <children>
-                                          <TableView fx:id="tbl_HorseDetails" layoutX="14.0" layoutY="80.0" prefHeight="200.0" prefWidth="835.0">
+                                          <TableView fx:id="tbl_HorseDetails" layoutX="14.0" layoutY="70.0" prefHeight="219.0" prefWidth="835.0" stylesheets="@dashboardDesign.css">
                                             <columns>
                                               <TableColumn fx:id="clmn_Horse_ID" prefWidth="83.0" text="Horse ID" />
                                               <TableColumn fx:id="clmn_Horse_Name" prefWidth="118.0" text="Horse Name" />

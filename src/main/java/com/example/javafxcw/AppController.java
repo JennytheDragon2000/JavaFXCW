@@ -5,14 +5,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.*;
 import java.util.*;
@@ -44,6 +50,7 @@ public class AppController {
     public AnchorPane select_horses_pane;
     public Button btn_select_horses_pane;
     public TextField txtfld_search;
+    public Button btn_logout;
 
     public ObservableList<Horse> getHorses() {
         return horses;
@@ -89,6 +96,9 @@ public class AppController {
     }
 
     private String selectedImagePath;
+
+    private double x;
+    private double y;
 
 
 
@@ -167,6 +177,49 @@ public class AppController {
         }
         tbl_HorseDetails.setItems(filteredList);
     }
+
+    public void logout() {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Message");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to logout?");
+        Optional<ButtonType> option = alert.showAndWait();
+        try {
+            if (option.get().equals(ButtonType.OK)) {
+
+                btn_logout.getScene().getWindow().hide();
+                Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(root);
+
+                root.setOnMousePressed((MouseEvent event) -> {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+                });
+
+                root.setOnMouseDragged((MouseEvent event) -> {
+                    stage.setX(event.getScreenX() - x);
+                    stage.setY(event.getScreenY() - y);
+
+                    stage.setOpacity(.8);
+                });
+
+                root.setOnMouseReleased((MouseEvent event) -> {
+                    stage.setOpacity(1);
+                });
+
+                stage.initStyle(StageStyle.TRANSPARENT);
+
+                stage.setScene(scene);
+                stage.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     @FXML
     void onClearHorseButtonClick() {
