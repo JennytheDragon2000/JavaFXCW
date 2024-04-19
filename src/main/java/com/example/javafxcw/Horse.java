@@ -13,6 +13,8 @@ public class Horse implements Serializable {
     private String breed;
     private String raceRecord;
     private String group;
+
+    private double lastRaceTime;
     private String imagePath; // store the path to the image instead of Image object
 
     public String getHorseID() {
@@ -109,8 +111,15 @@ public class Horse implements Serializable {
 
     public double getRaceTime() {
         // Generate a random value between 0 and 90
+        return lastRaceTime;
+    }
+    public double SetRandomRaceTime() {
+        // Generate a random value between 0 and 90
         double randomValue = Math.random() * 90;
-        return randomValue;
+        lastRaceTime =  randomValue;
+        return lastRaceTime;
+
+
     }
 
     @Override

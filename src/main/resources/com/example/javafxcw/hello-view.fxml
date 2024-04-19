@@ -53,12 +53,12 @@
                               <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20.0" />
                            </graphic>
                         </Button>
-                        <Button fx:id="btn_logout" layoutX="9.0" layoutY="497.0" mnemonicParsing="false" onAction="#logout" prefHeight="14.0" prefWidth="28.0" styleClass="logout" stylesheets="@dashboardDesign.css">
+                        <Button fx:id="btn_logout" layoutX="24.0" layoutY="494.0" mnemonicParsing="false" onAction="#logout" prefHeight="14.0" prefWidth="28.0" styleClass="logout" stylesheets="@dashboardDesign.css">
                            <graphic>
                               <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="30.0" text="" />
                            </graphic>
                         </Button>
-                        <Label layoutX="64.0" layoutY="507.0" text="Logout" textFill="WHITE">
+                        <Label layoutX="79.0" layoutY="504.0" text="Exit" textFill="WHITE">
                            <font>
                               <Font name="JetBrainsMono NF Regular" size="16.0" />
                            </font>
@@ -130,8 +130,8 @@
                                           <String fx:value="shadow" />
                                        </styleClass>
                                        <children>
-                                          <ImageView fx:id="imgvw_Horse_Image" fitHeight="162.0" fitWidth="200.0" layoutX="50.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" styleClass="white-bg" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                          <Button fx:id="btn_import_Image" layoutX="1.0" layoutY="162.0" mnemonicParsing="false" onAction="#onImportImageButtonClick" prefHeight="45.0" prefWidth="200.0" styleClass="import-btn" stylesheets="@dashboardDesign.css" text="Import" />
+                                          <ImageView fx:id="imgvw_Horse_Image" fitHeight="162.0" fitWidth="200.0" layoutX="50.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" styleClass="white-bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Button fx:id="btn_import_Image" layoutX="1.0" layoutY="162.0" mnemonicParsing="false" onAction="#onImportImageButtonClick" prefHeight="45.0" prefWidth="200.0" styleClass="import-btn" stylesheets="@dashboardDesign.css" text="Import" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <Button fx:id="btn_Add_horse" layoutX="27.0" layoutY="489.0" mnemonicParsing="false" onAction="#onAddHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="Add" />
@@ -141,27 +141,6 @@
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="Race_Pane" layoutX="250.0" layoutY="141.0" prefHeight="555.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <AnchorPane fx:id="barChart_cart" layoutX="23.0" layoutY="26.0" prefHeight="235.0" prefWidth="851.0" stylesheets="@dashboardDesign.css">
-                                 <styleClass>
-                                    <String fx:value="white-bg" />
-                                    <String fx:value="shadow" />
-                                 </styleClass>
-                                 <children>
-                                    <BarChart fx:id="barChart" layoutX="161.0" layoutY="69.0" prefHeight="352.0" prefWidth="851.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
-                                      </xAxis>
-                                      <yAxis>
-                                        <NumberAxis side="LEFT" />
-                                      </yAxis>
-                                    </BarChart>
-                                 </children>
-                              </AnchorPane>
-                              <Button fx:id="btn_start_race" layoutX="431.0" layoutY="278.0" mnemonicParsing="false" onAction="#onStartRaceButtonClick" prefHeight="53.0" prefWidth="107.0" text="Start Race" />
-                           </children>
-                        </AnchorPane>
                         <AnchorPane fx:id="select_horses_pane" layoutX="350.0" layoutY="140.0" prefHeight="555.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="40.0" layoutY="23.0" prefHeight="417.0" prefWidth="845.0" stylesheets="@dashboardDesign.css">
@@ -183,6 +162,85 @@
                                     <TableColumn fx:id="select_Horse_Image1" prefWidth="152.0" text="Horse Image" />
                                  </columns>
                               </TableView>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="Race_Pane" layoutX="250.0" layoutY="141.0" prefHeight="555.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="11.0" prefHeight="580.0" prefWidth="873.0" stylesheets="@dashboardDesign.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <styleClass>
+                                    <String fx:value="shadow" />
+                                    <String fx:value="white-bg" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane fx:id="barChart_cart" prefHeight="242.0" prefWidth="851.0" stylesheets="@dashboardDesign.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <styleClass>
+                                          <String fx:value="white-bg" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <children>
+                                          <BarChart fx:id="barChart" layoutX="6.0" layoutY="14.0" prefHeight="256.0" prefWidth="851.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="-6.0" AnchorPane.topAnchor="14.0">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </BarChart>
+                                       </children>
+                                    </AnchorPane>
+                                    <Button fx:id="btn_start_race" layoutX="373.0" layoutY="251.0" mnemonicParsing="false" onAction="#onStartRaceButtonClick" prefHeight="36.0" prefWidth="107.0" text="Start Race" />
+                                    <AnchorPane layoutX="147.0" layoutY="311.0" prefHeight="279.0" prefWidth="880.0" stylesheets="@dashboardDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <styleClass>
+                                          <String fx:value="shadow" />
+                                          <String fx:value="white-bg" />
+                                       </styleClass>
+                                       <children>
+                                          <AnchorPane layoutX="64.0" layoutY="23.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@dashboardDesign.css">
+                                             <styleClass>
+                                                <String fx:value="shadow" />
+                                                <String fx:value="white-bg" />
+                                             </styleClass>
+                                             <children>
+                                                <ImageView fx:id="first_place_img" fitHeight="200.0" fitWidth="200.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane layoutX="316.0" layoutY="23.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@dashboardDesign.css">
+                                             <styleClass>
+                                                <String fx:value="shadow" />
+                                                <String fx:value="white-bg" />
+                                             </styleClass>
+                                             <children>
+                                                <ImageView fx:id="second_place_img" fitHeight="200.0" fitWidth="200.0" layoutX="9.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane layoutX="575.0" layoutY="23.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@dashboardDesign.css">
+                                             <styleClass>
+                                                <String fx:value="shadow" />
+                                                <String fx:value="white-bg" />
+                                             </styleClass>
+                                             <children>
+                                                <ImageView fx:id="third_place_img" fitHeight="200.0" fitWidth="200.0" layoutX="4.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <Label layoutX="109.0" layoutY="237.0" prefHeight="18.0" prefWidth="81.0" text="Winner">
+                                             <font>
+                                                <Font name="System Bold" size="21.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="329.0" layoutY="237.0" prefHeight="31.0" prefWidth="166.0" text="1st Runner Up">
+                                             <font>
+                                                <Font name="System Bold" size="21.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="592.0" layoutY="237.0" prefHeight="31.0" prefWidth="166.0" text="2st Runner Up">
+                                             <font>
+                                                <Font name="System Bold" size="21.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
                      </children>

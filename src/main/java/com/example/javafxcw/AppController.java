@@ -5,21 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 import java.io.*;
 import java.util.*;
 
@@ -28,11 +21,7 @@ public class AppController {
     public AnchorPane Horse_Pane;
     public AnchorPane Race_Pane;
     public Button btn_Horse;
-    public Button btn_select_horses;
     public BarChart<String, Double> barChart;
-
-
-
     public Button btn_start_race;
     public AnchorPane barChart_cart;
     public Button btn_select_horses_by_group;
@@ -45,12 +34,13 @@ public class AppController {
     public TableColumn select_Race_Record1;
     public TableColumn select_Group1;
     public TableColumn select_Horse_Image1;
-    public TableColumn select_clam_Jockey_Name1;
-    public Button btn_select_horses1;
     public AnchorPane select_horses_pane;
     public Button btn_select_horses_pane;
     public TextField txtfld_search;
     public Button btn_logout;
+    public ImageView first_place_img;
+    public ImageView second_place_img;
+    public ImageView third_place_img;
 
     public ObservableList<Horse> getHorses() {
         return horses;
@@ -100,6 +90,8 @@ public class AppController {
     private double x;
     private double y;
 
+    private boolean isMouseOverImage = false;
+
 
 
     @FXML
@@ -144,6 +136,10 @@ public class AppController {
                 String imagePath = selectedHorse.getImagePath();
                 if (imagePath != null && !imagePath.isEmpty()) {
                     imgvw_Horse_Image.setImage(new Image(imagePath));
+                    imgvw_Horse_Image.setPreserveRatio(false);
+                    imgvw_Horse_Image.setSmooth(true);
+                    imgvw_Horse_Image.setFitWidth(first_place_img.getFitWidth()); // Set the fit width to the ImageView's width
+                    imgvw_Horse_Image.setFitHeight(first_place_img.getFitHeight());
                 } else {
                     // Set a default image or clear the image view if no image path is available
                     imgvw_Horse_Image.setImage(null);
@@ -159,6 +155,32 @@ public class AppController {
         txtfld_search.textProperty().addListener((observable, oldValue, newValue) -> {
             filterTableByHorseID(newValue);
         });
+
+
+        // Add event listeners to show/hide the import button when mouse enters/exits the image
+        imgvw_Horse_Image.setOnMouseEntered(event -> {
+            isMouseOverImage = true;
+            btn_import_Image.setVisible(true);
+        });
+
+        imgvw_Horse_Image.setOnMouseExited(event -> {
+            isMouseOverImage = false;
+            btn_import_Image.setVisible(false);
+        });
+
+
+        btn_import_Image.setOnMouseEntered(event -> {
+            isMouseOverImage = true;
+            btn_import_Image.setVisible(true);
+        });
+
+        btn_import_Image.setOnMouseExited(event -> {
+            isMouseOverImage = false;
+            btn_import_Image.setVisible(false);
+        });
+
+        onSelectHorsesByGroupButtonClick();
+        onStartRaceButtonClick();
     }
 
     private void filterTableByHorseID(String id) {
@@ -188,31 +210,7 @@ public class AppController {
         try {
             if (option.get().equals(ButtonType.OK)) {
 
-                btn_logout.getScene().getWindow().hide();
-                Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(root);
-
-                root.setOnMousePressed((MouseEvent event) -> {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-                });
-
-                root.setOnMouseDragged((MouseEvent event) -> {
-                    stage.setX(event.getScreenX() - x);
-                    stage.setY(event.getScreenY() - y);
-
-                    stage.setOpacity(.8);
-                });
-
-                root.setOnMouseReleased((MouseEvent event) -> {
-                    stage.setOpacity(1);
-                });
-
-                stage.initStyle(StageStyle.TRANSPARENT);
-
-                stage.setScene(scene);
-                stage.show();
+                Platform.exit();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -236,11 +234,6 @@ public class AppController {
 
     @FXML
     private Label welcomeText;
-
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
 
     @FXML
     void onAddHorseButtonClick() {
@@ -409,10 +402,6 @@ public class AppController {
 
             // Set the image in the ImageView
             imgvw_Horse_Image.setImage(image);
-            // Set the fitWidth and fitHeight properties to constrain the size of the image
-//            imgvw_Horse_Image.setPreserveRatio(false);
-//            imgvw_Horse_Image.setFitWidth(200); // Adjust the width as needed
-//            imgvw_Horse_Image.setFitHeight(200); // Adjust the height as needed
 
             double originalImageWidth = image.getWidth();
             double originalImageHeight = image.getHeight();
@@ -556,10 +545,48 @@ public class AppController {
     private void onStartRaceButtonClick() {
         // Sort the top horses by race time
         List<Horse> topHorses = new ArrayList<>(topHorsesByGroup.values());
+//        topHorses.sort(Comparator.comparingDouble(Horse::getRaceTime));
+        for (Horse horse : topHorses) {
+            horse.SetRandomRaceTime();
+        }
+
         topHorses.sort(Comparator.comparingDouble(Horse::getRaceTime));
         // Select the top 3 horses with the least time
         List<Horse> top3Horses = topHorses.subList(0, Math.min(3, topHorses.size()));
 
+        // Print the details of the top 3 horses to the console
+        for (Horse horse : top3Horses) {
+            System.out.println("Horse ID: " + horse.getHorseID());
+            System.out.println("Horse Name: " + horse.getHorseName());
+            System.out.println("Race Time: " + horse.getRaceTime());
+            System.out.println("------------------------------------");
+        }
+
+        // Display the pictures of the top 3 horses on respective ImageView
+        if (top3Horses.size() >= 1) {
+            Image firstImage = new Image(top3Horses.get(0).getImagePath());
+            first_place_img.setImage(firstImage);
+            first_place_img.setPreserveRatio(false);
+            first_place_img.setSmooth(true);
+            first_place_img.setFitWidth(first_place_img.getFitWidth()); // Set the fit width to the ImageView's width
+            first_place_img.setFitHeight(first_place_img.getFitHeight()); // Set the fit height to the ImageView's height
+        }
+        if (top3Horses.size() >= 2) {
+            Image secondImage = new Image(top3Horses.get(1).getImagePath());
+            second_place_img.setImage(secondImage);
+            second_place_img.setPreserveRatio(false);
+            second_place_img.setSmooth(true);
+            second_place_img.setFitWidth(second_place_img.getFitWidth()); // Set the fit width to the ImageView's width
+            second_place_img.setFitHeight(second_place_img.getFitHeight()); // Set the fit height to the ImageView's height
+        }
+        if (top3Horses.size() >= 3) {
+            Image thirdImage = new Image(top3Horses.get(2).getImagePath());
+            third_place_img.setImage(thirdImage);
+            third_place_img.setPreserveRatio(false);
+            third_place_img.setSmooth(true);
+            third_place_img.setFitWidth(third_place_img.getFitWidth()); // Set the fit width to the ImageView's width
+            third_place_img.setFitHeight(third_place_img.getFitHeight()); // Set the fit height to the ImageView's height
+        }
         // Clear existing data from the bar chart
         barChart.getData().clear();
 
@@ -569,7 +596,10 @@ public class AppController {
             series.getData().add(new XYChart.Data<>(horse.getHorseName(), (double) horse.getRaceTime()));
         }
         barChart.getData().add(series);
+
     }
+
+
     @FXML
     private void onSelectHorsesByGroupButtonClick() {
         onSelectHorsesButtonClick();
