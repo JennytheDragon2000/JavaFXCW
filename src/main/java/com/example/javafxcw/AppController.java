@@ -1,5 +1,6 @@
 package com.example.javafxcw;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,13 +17,16 @@ import javafx.stage.FileChooser;
 import java.io.*;
 import java.util.*;
 
-public class HelloController {
+public class AppController {
     public Button btn_Race;
     public AnchorPane Horse_Pane;
     public AnchorPane Race_Pane;
     public Button btn_Horse;
     public Button btn_select_horses;
-    public BarChart barChart;
+    public BarChart<String, Double> barChart;
+
+
+
     public Button btn_start_race;
     public AnchorPane barChart_cart;
     public Button btn_select_horses_by_group;
@@ -39,6 +43,16 @@ public class HelloController {
     public Button btn_select_horses1;
     public AnchorPane select_horses_pane;
     public Button btn_select_horses_pane;
+    public TextField txtfld_search;
+
+    public ObservableList<Horse> getHorses() {
+        return horses;
+    }
+
+    public void setHorses(ObservableList<Horse> horses) {
+        this.horses = horses;
+    }
+
     private ObservableList<Horse> horses = FXCollections.observableArrayList();
     public TableView tbl_HorseDetails;
     public TableColumn clmn_Horse_ID;
@@ -90,6 +104,8 @@ public class HelloController {
         clmn_Breed.setCellValueFactory(new PropertyValueFactory<>("breed"));
         clmn_Race_Record.setCellValueFactory(new PropertyValueFactory<>("raceRecord"));
         clmn_Group.setCellValueFactory(new PropertyValueFactory<>("group"));
+        clmn_Horse_Image.setCellValueFactory(new PropertyValueFactory<>("imagePath"));
+
 
 
         // Set up table view columns
@@ -100,26 +116,7 @@ public class HelloController {
         select_clmn_Breed1.setCellValueFactory(new PropertyValueFactory<>("breed"));
         select_Race_Record1.setCellValueFactory(new PropertyValueFactory<>("raceRecord"));
         select_Group1.setCellValueFactory(new PropertyValueFactory<>("group"));
-//        select_Horse_Image1.setCellValueFactory(new PropertyValueFactory<>("image"));
-
-        // Handle image column separately
-        clmn_Horse_Image.setCellFactory(column -> {
-            return new TableCell<Horse, Image>() {
-                private final ImageView imageView = new ImageView();
-                @Override
-                protected void updateItem(Image item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setGraphic(null);
-                    } else {
-                        imageView.setImage(item);
-                        imageView.setFitWidth(50); // Adjust the width as needed
-                        imageView.setFitHeight(50); // Adjust the height as needed
-                        setGraphic(imageView);
-                    }
-                }
-            };
-        });
+        select_Horse_Image1.setCellValueFactory(new PropertyValueFactory<>("imagePath"));
 
         // Add listener to TableView selection model
         tbl_HorseDetails.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -143,14 +140,36 @@ public class HelloController {
                 }
             }
         });
+        // Initialize the barChart with an empty series
+        XYChart.Series<String, Double> emptySeries = new XYChart.Series<>();
+        barChart.getData().add(emptySeries);
 
 
+        // Add listener to txtfld_search text property
+        txtfld_search.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTableByHorseID(newValue);
+        });
+    }
 
+    private void filterTableByHorseID(String id) {
+        // If the ID is empty, show all horses
+        if (id.isEmpty()) {
+            tbl_HorseDetails.setItems(horses);
+            return;
+        }
 
+        // Filter horses based on ID
+        ObservableList<Horse> filteredList = FXCollections.observableArrayList();
+        for (Horse horse : horses) {
+            if (horse.getHorseID().toLowerCase().contains(id.toLowerCase())) {
+                filteredList.add(horse);
+            }
+        }
+        tbl_HorseDetails.setItems(filteredList);
     }
 
     @FXML
-    private void onClearHorseButtonClick() {
+    void onClearHorseButtonClick() {
         // Clear all text fields
         txtfld_Horse_ID.clear();
         txtfld_Horse_Name.clear();
@@ -171,7 +190,7 @@ public class HelloController {
     }
 
     @FXML
-    private void onAddHorseButtonClick() {
+    void onAddHorseButtonClick() {
         String horseID = txtfld_Horse_ID.getText().trim();
         String horseName = txtfld_Horse_Name.getText().trim();
         String jockeyName = txtfld_Jockey_Name.getText().trim();
@@ -181,14 +200,14 @@ public class HelloController {
         String group = txtfld_Group.getText().trim();
         String imagePath = selectedImagePath;
 
-        // Check if any of the fields are empty
-        if (horseID.isEmpty() || horseName.isEmpty() || jockeyName.isEmpty() || ageText.isEmpty() || breed.isEmpty() || raceRecord.isEmpty() || group.isEmpty()) {
-            // Display an error message indicating that all fields are required
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("All fields are required.");
-            alert.showAndWait();
+        if (horseID.isEmpty() || horseName.isEmpty() || jockeyName.isEmpty() || ageText.isEmpty() || breed.isEmpty() || raceRecord.isEmpty() || group.isEmpty() || imagePath == null) {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("All fields are required.");
+                alert.showAndWait();
+            });
             return;
         }
 
@@ -197,12 +216,13 @@ public class HelloController {
         try {
             age = Integer.parseInt(ageText);
         } catch (NumberFormatException e) {
-            // Display an error message indicating that the age must be an integer
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Age must be a valid integer.");
-            alert.showAndWait();
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Age must be a valid integer.");
+                alert.showAndWait();
+            });
             return;
         }
 
@@ -210,12 +230,13 @@ public class HelloController {
         boolean idExists = horses.stream().anyMatch(horse -> horse.getHorseID().equals(horseID));
 
         if (idExists) {
-            // Display an error message indicating that the horse ID already exists
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Horse with ID " + horseID + " already exists.");
-            alert.showAndWait();
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Horse with ID " + horseID + " already exists.");
+                alert.showAndWait();
+            });
             return;
         }
 
@@ -229,6 +250,7 @@ public class HelloController {
         // Save the updated list to file
         Horse.saveHorseListToFile(horses, "horses.dat");
     }
+
 
     public void switchForm(ActionEvent event) {
 
@@ -290,21 +312,9 @@ public class HelloController {
         }
     }
 
-    private void printHorseDetails(Horse horse) {
-        System.out.println("Horse ID: " + horse.getHorseID());
-        System.out.println("Horse Name: " + horse.getHorseName());
-        System.out.println("Jockey Name: " + horse.getJockeyName());
-        System.out.println("Age: " + horse.getAge());
-        System.out.println("Breed: " + horse.getBreed());
-        System.out.println("Race Record: " + horse.getRaceRecord());
-        System.out.println("Group: " + horse.getGroup());
-        System.out.println("Horse Image: " + horse.getImagePath());
-        System.out.println("----------------------------");
-    }
-
 
     // Group horses by their group
-    private static Map<String, List<Horse>> groupHorsesByGroup(List<Horse> horses) {
+    static Map<String, List<Horse>> groupHorsesByGroup(List<Horse> horses) {
         Map<String, List<Horse>> horseGroups = new HashMap<>();
         for (Horse horse : horses) {
             horseGroups.computeIfAbsent(horse.getGroup(), k -> new ArrayList<>()).add(horse);
@@ -313,7 +323,7 @@ public class HelloController {
     }
 
     // Select the top horse from each group with the best time
-    private static Map<String, Horse> selectTopHorsesByGroup(Map<String, List<Horse>> horseGroups) {
+    static Map<String, Horse> selectTopHorsesByGroup(Map<String, List<Horse>> horseGroups) {
         Map<String, Horse> topHorsesByGroup = new HashMap<>();
         for (Map.Entry<String, List<Horse>> entry : horseGroups.entrySet()) {
             String group = entry.getKey();
@@ -342,14 +352,38 @@ public class HelloController {
         if (selectedFile != null) {
             // Get the path of the selected image
             selectedImagePath = selectedFile.toURI().toString();
+            Image image = new Image(selectedImagePath);
 
             // Set the image in the ImageView
-            imgvw_Horse_Image.setImage(new Image(selectedImagePath));
+            imgvw_Horse_Image.setImage(image);
+            // Set the fitWidth and fitHeight properties to constrain the size of the image
+//            imgvw_Horse_Image.setPreserveRatio(false);
+//            imgvw_Horse_Image.setFitWidth(200); // Adjust the width as needed
+//            imgvw_Horse_Image.setFitHeight(200); // Adjust the height as needed
+
+            double originalImageWidth = image.getWidth();
+            double originalImageHeight = image.getHeight();
+            double targetWidth = 200;
+            double targetHeight = 162;
+
+            double aspectRatio = originalImageWidth / originalImageHeight;
+            double targetAspectRatio = targetWidth / targetHeight;
+
+            if (aspectRatio > targetAspectRatio) {
+                // Image is wider than target, adjust width
+                imgvw_Horse_Image.setFitWidth(targetWidth);
+                imgvw_Horse_Image.setFitHeight(targetWidth / aspectRatio);
+            } else {
+                // Image is taller than target, adjust height
+                imgvw_Horse_Image.setFitHeight(targetHeight);
+                imgvw_Horse_Image.setFitWidth(targetHeight * aspectRatio);
+            }
         }
+
     }
 
     @FXML
-    private void onDeleteHorseButtonClick() {
+    void onDeleteHorseButtonClick() {
         // Get the selected item from the TableView
         Horse selectedHorse = (Horse) tbl_HorseDetails.getSelectionModel().getSelectedItem();
         if (selectedHorse != null) {
@@ -410,6 +444,17 @@ public class HelloController {
                 return;
             }
 
+            // Check if the new horse ID already exists
+            if (!horseID.equals(selectedHorse.getHorseID()) && horses.stream().anyMatch(horse -> horse.getHorseID().equals(horseID))) {
+                // Display an error message indicating that the horse ID already exists
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Horse with ID " + horseID + " already exists.");
+                alert.showAndWait();
+                return;
+            }
+
             // Update the details of the selected horse
             selectedHorse.setHorseID(horseID);
             selectedHorse.setHorseName(horseName);
@@ -456,7 +501,6 @@ public class HelloController {
 
     @FXML
     private void onStartRaceButtonClick() {
-
         // Sort the top horses by race time
         List<Horse> topHorses = new ArrayList<>(topHorsesByGroup.values());
         topHorses.sort(Comparator.comparingDouble(Horse::getRaceTime));
@@ -469,11 +513,10 @@ public class HelloController {
         // Create a single series and add data points to it
         XYChart.Series<String, Double> series = new XYChart.Series<>();
         for (Horse horse : top3Horses) {
-            series.getData().add(new XYChart.Data<>(horse.getHorseName(), horse.getRaceTime()));
+            series.getData().add(new XYChart.Data<>(horse.getHorseName(), (double) horse.getRaceTime()));
         }
         barChart.getData().add(series);
     }
-
     @FXML
     private void onSelectHorsesByGroupButtonClick() {
         onSelectHorsesButtonClick();

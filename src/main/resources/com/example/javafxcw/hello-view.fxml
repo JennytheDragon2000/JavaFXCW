@@ -17,13 +17,13 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxcw.HelloController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxcw.AppController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
             <BorderPane layoutX="319.0" layoutY="172.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
-                  <AnchorPane prefHeight="45.0" prefWidth="200.0" styleClass="top-form" stylesheets="@dashboardDesign.css" BorderPane.alignment="CENTER">
+                  <AnchorPane prefHeight="45.0" prefWidth="1100.0" styleClass="top-form" stylesheets="@dashboardDesign.css" BorderPane.alignment="CENTER">
                      <children>
                         <FontAwesomeIconView glyphName="USERS" layoutX="22.0" layoutY="27.0" />
                         <Label layoutX="495.0" layoutY="6.0" text="Rapid Run">
@@ -82,19 +82,19 @@
                      <children>
                         <AnchorPane fx:id="Horse_Pane" layoutX="162.0" layoutY="102.0" prefHeight="555.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="533.0" prefWidth="870.0" stylesheets="@dashboardDesign.css">
+                              <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="573.0" prefWidth="881.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane prefHeight="249.0" prefWidth="881.0" stylesheets="@dashboardDesign.css">
+                                    <AnchorPane prefHeight="301.0" prefWidth="881.0" stylesheets="@dashboardDesign.css">
                                        <styleClass>
                                           <String fx:value="white-bg" />
                                           <String fx:value="shadow" />
                                        </styleClass>
                                        <children>
-                                          <TableView fx:id="tbl_HorseDetails" layoutX="8.0" layoutY="25.0" prefHeight="200.0" prefWidth="835.0">
+                                          <TableView fx:id="tbl_HorseDetails" layoutX="14.0" layoutY="80.0" prefHeight="200.0" prefWidth="835.0">
                                             <columns>
                                               <TableColumn fx:id="clmn_Horse_ID" prefWidth="83.0" text="Horse ID" />
                                               <TableColumn fx:id="clmn_Horse_Name" prefWidth="118.0" text="Horse Name" />
@@ -106,36 +106,38 @@
                                                 <TableColumn fx:id="clmn_Horse_Image" prefWidth="138.0" text="Horse Image" />
                                             </columns>
                                           </TableView>
+                                          <TextField fx:id="txtfld_search" layoutX="26.0" layoutY="20.0" prefHeight="26.0" prefWidth="200.0" promptText="Search" styleClass="search" stylesheets="@dashboardDesign.css" />
+                                          <FontAwesomeIconView glyphName="SEARCH" layoutX="37.0" layoutY="38.0" />
                                        </children>
                                     </AnchorPane>
-                                    <Label layoutX="31.0" layoutY="275.0" text="Horse ID:" />
-                                    <TextField fx:id="txtfld_Horse_ID" layoutX="95.0" layoutY="271.0" />
-                                    <Label layoutX="7.0" layoutY="313.0" prefHeight="18.0" prefWidth="104.0" text="Horse Name:" />
-                                    <TextField fx:id="txtfld_Horse_Name" layoutX="95.0" layoutY="309.0" />
-                                    <Label layoutX="4.0" layoutY="357.0" prefHeight="18.0" prefWidth="106.0" text="Jockey Name:" />
-                                    <TextField fx:id="txtfld_Jockey_Name" layoutX="95.0" layoutY="353.0" />
-                                    <Label layoutX="31.0" layoutY="410.0" text="Age" />
-                                    <TextField fx:id="txtfld_Age" layoutX="95.0" layoutY="406.0" />
-                                    <Label layoutX="306.0" layoutY="275.0" text="Breed" />
-                                    <TextField fx:id="txtfld_Breed" layoutX="370.0" layoutY="271.0" />
-                                    <Label layoutX="306.0" layoutY="326.0" text="Race Record" />
-                                    <TextField fx:id="txtfld_Race_Record" layoutX="395.0" layoutY="322.0" />
-                                    <Label layoutX="306.0" layoutY="370.0" text="Group" />
-                                    <TextField fx:id="txtfld_Group" layoutX="395.0" layoutY="366.0" />
-                                    <AnchorPane fx:id="anchr_Image" layoutX="632.0" layoutY="255.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@dashboardDesign.css">
+                                    <Label layoutX="44.0" layoutY="323.0" text="Horse ID:" />
+                                    <TextField fx:id="txtfld_Horse_ID" layoutX="112.0" layoutY="319.0" />
+                                    <Label layoutX="20.0" layoutY="361.0" prefHeight="18.0" prefWidth="104.0" text="Horse Name:" />
+                                    <TextField fx:id="txtfld_Horse_Name" layoutX="112.0" layoutY="357.0" />
+                                    <Label layoutX="17.0" layoutY="405.0" prefHeight="18.0" prefWidth="106.0" text="Jockey Name:" />
+                                    <TextField fx:id="txtfld_Jockey_Name" layoutX="111.0" layoutY="401.0" />
+                                    <Label layoutX="72.0" layoutY="444.0" text="Age:" />
+                                    <TextField fx:id="txtfld_Age" layoutX="110.0" layoutY="440.0" />
+                                    <Label layoutX="339.0" layoutY="315.0" text="Breed:" />
+                                    <TextField fx:id="txtfld_Breed" layoutX="389.0" layoutY="311.0" />
+                                    <Label layoutX="300.0" layoutY="366.0" text="Race Record:" />
+                                    <TextField fx:id="txtfld_Race_Record" layoutX="389.0" layoutY="362.0" />
+                                    <Label layoutX="338.0" layoutY="410.0" text="Group:" />
+                                    <TextField fx:id="txtfld_Group" layoutX="392.0" layoutY="406.0" />
+                                    <AnchorPane fx:id="anchr_Image" layoutX="614.0" layoutY="311.0" prefHeight="207.0" prefWidth="194.0" stylesheets="@dashboardDesign.css">
                                        <styleClass>
                                           <String fx:value="white-bg" />
                                           <String fx:value="shadow" />
                                        </styleClass>
                                        <children>
-                                          <ImageView fx:id="imgvw_Horse_Image" fitHeight="200.0" fitWidth="200.0" layoutX="2.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Button fx:id="btn_import_Image" layoutX="2.0" layoutY="160.0" mnemonicParsing="false" onAction="#onImportImageButtonClick" prefHeight="45.0" prefWidth="200.0" styleClass="import-btn" stylesheets="@dashboardDesign.css" text="Import" />
+                                          <ImageView fx:id="imgvw_Horse_Image" fitHeight="162.0" fitWidth="200.0" layoutX="50.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" styleClass="white-bg" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Button fx:id="btn_import_Image" layoutX="1.0" layoutY="162.0" mnemonicParsing="false" onAction="#onImportImageButtonClick" prefHeight="45.0" prefWidth="200.0" styleClass="import-btn" stylesheets="@dashboardDesign.css" text="Import" />
                                        </children>
                                     </AnchorPane>
-                                    <Button fx:id="btn_Add_horse" layoutX="23.0" layoutY="450.0" mnemonicParsing="false" onAction="#onAddHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="Add" />
-                                    <Button fx:id="btn_update_horse" layoutX="141.0" layoutY="450.0" mnemonicParsing="false" onAction="#onUpdateHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="update-btn" stylesheets="@dashboardDesign.css" text="Update" />
-                                    <Button fx:id="btn_clear_horse" layoutX="261.0" layoutY="450.0" mnemonicParsing="false" onAction="#onClearHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Clear" />
-                                    <Button fx:id="btn_delete_horse" layoutX="382.0" layoutY="450.0" mnemonicParsing="false" onAction="#onDeleteHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Delete" />
+                                    <Button fx:id="btn_Add_horse" layoutX="27.0" layoutY="489.0" mnemonicParsing="false" onAction="#onAddHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="Add" />
+                                    <Button fx:id="btn_update_horse" layoutX="145.0" layoutY="489.0" mnemonicParsing="false" onAction="#onUpdateHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="update-btn" stylesheets="@dashboardDesign.css" text="Update" />
+                                    <Button fx:id="btn_clear_horse" layoutX="265.0" layoutY="489.0" mnemonicParsing="false" onAction="#onClearHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Clear" />
+                                    <Button fx:id="btn_delete_horse" layoutX="386.0" layoutY="489.0" mnemonicParsing="false" onAction="#onDeleteHorseButtonClick" prefHeight="55.0" prefWidth="109.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Delete" />
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>

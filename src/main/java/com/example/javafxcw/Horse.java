@@ -112,4 +112,18 @@ public class Horse implements Serializable {
         double randomValue = Math.random() * 90;
         return randomValue;
     }
+
+    @Override
+    public String toString() {
+        return "Horse{" +
+                "horseID='" + horseID + '\'' +
+                ", horseName='" + horseName + '\'' +
+                ", jockeyName='" + jockeyName + '\'' +
+                ", age=" + age +
+                ", breed='" + breed + '\'' +
+                ", raceRecord='" + raceRecord + '\'' +
+                ", group='" + group + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                '}';
+    }
 }
