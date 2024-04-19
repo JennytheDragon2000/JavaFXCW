@@ -19,7 +19,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
-import javafx.scene.control.Alert;
 
 @ExtendWith(ApplicationExtension.class)
 class AppControllerTest {
@@ -144,12 +143,10 @@ class AppControllerTest {
 
         try {
             controller.onAddHorseButtonClick();
-//            fail("Expected a RuntimeException");
         } catch (RuntimeException e) {
             assertEquals("All fields are required.", e.getMessage());
         }
     }//
-//    // ... and more tests for other methodso
 
     @Test
     void testOnDeleteHorseButtonClick() {
@@ -182,7 +179,6 @@ class AppControllerTest {
         // Call the method again when no horse is selected
         controller.tbl_HorseDetails.getSelectionModel().clearSelection();
         controller.onDeleteHorseButtonClick();
-        // Add assertions for the case when no horse is selected, if needed
     }
 
 }
